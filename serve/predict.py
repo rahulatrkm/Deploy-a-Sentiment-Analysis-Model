@@ -65,12 +65,13 @@ def predict_fn(input_data, model):
     if model.word_dict is None:
         raise Exception('Model has not been loaded properly, no word_dict.')
 
-    #  Process input_data so that it is ready to be sent to our model.
+    #  TODO: Process input_data so that it is ready to be sent to our model.
     #       You should produce two variables:
     #         data_X   - A sequence of length 500 which represents the converted review
     #         data_len - The length of the review
 
-    data_X, data_len = convert_and_pad(model.word_dict, review_to_words(input_data))
+    words = review_to_words(input_data)
+    data_X, data_len = convert_and_pad(model.word_dict, words)
 
     # Using data_X and data_len we construct an appropriate input tensor. Remember
     # that our model expects input data of the form 'len, review[500]'.
@@ -87,6 +88,7 @@ def predict_fn(input_data, model):
     #       be a numpy array which contains a single integer which is either 1 or 0
     with torch.no_grad():
         output = model.forward(data)
-    result = np.round(output.numpy())
 
+    result = np.round(output.numpy())
+    #print(result)
     return result
